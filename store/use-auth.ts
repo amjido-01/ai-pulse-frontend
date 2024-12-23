@@ -42,7 +42,7 @@ export const useAuthStore = create(
 
           set({ accessToken, user: responseBody });
           api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-          
+          console.log(accessToken, ".....")
           // Fetch user data after successful login
           // await get().checkAuth();
         } catch (error) {
@@ -79,6 +79,7 @@ export const useAuthStore = create(
         try {
           const response = await api.post("/refresh-token");
           const { accessToken } = response.data;
+          console.log(accessToken, "refreshtoken")
 
           set({ accessToken });
           api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
