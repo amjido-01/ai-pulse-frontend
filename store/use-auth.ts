@@ -37,10 +37,10 @@ export const useAuthStore = create(
       register: async (name: string, email: string, password: string) => {
         try {
           const response = await api.post('/auth/register', { name, email, password })
-          console.log(response, ".....")
-          const { responseBody: user } = response.data
-          console.log(user, "from register")
-          set({ user })
+          console.log(response, "from register")
+          const { user, accessToken, refreshToken } = response.data.responseBody
+          set({ user, accessToken, refreshToken })
+          api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
 
           // Note: We don't set tokens here as they're typically not provided upon registration
         } catch (error) {
