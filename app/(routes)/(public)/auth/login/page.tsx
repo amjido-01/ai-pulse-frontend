@@ -12,17 +12,23 @@ import { useAuthStore } from '@/store/use-auth'
 export default function Page() {
   const router = useRouter()
   const { login } = useAuthStore()
-  const [isLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState("")
 
+ 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     try {
       await login(email, password)
       router.push('/dashboard')
     } catch (error) {
       console.error('Login error:', error)
+      setError('Login failed. Please try again.') 
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -68,6 +74,10 @@ export default function Page() {
               className="w-full bg-gray-900 border-gray-700 text-white placeholder-gray-400 focus:ring-[#50E3C2] focus:border-[#50E3C2]"
             />
           </div>
+           
+          {error && (
+            <div className="text-red-500 text-sm text-center">{error}</div>
+          )}
           <Button
             type='submit'
             disabled={isLoading}
@@ -98,7 +108,7 @@ export default function Page() {
         
         <p className="text-center text-sm text-gray-400">
           Don't have an account?{' '}
-          <Link href="/auth/signup" className="font-medium text-[#50E3C2] hover:text-[#4FACFE] transition-colors">
+          <Link href="/auth/register" className="font-medium text-[#50E3C2] hover:text-[#4FACFE] transition-colors">
             Sign up
           </Link>
         </p>

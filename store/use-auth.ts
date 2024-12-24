@@ -16,6 +16,7 @@ interface AuthState {
   loading: boolean;
   isLoggedIn: () => boolean;
   login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>
   logout: () => Promise<void>;
   checkAuth: () => Promise<boolean>;
   refreshToken: () => Promise<void>;
@@ -33,6 +34,21 @@ export const useAuthStore = create(
         return !!get().accessToken;
       },
 
+      register: async (name: string, email: string, password: string) => {
+        try {
+          const response = await api.post('/auth/register', { name, email, password })
+          console.log(response, ".....")
+          const { responseBody: user } = response.data
+          console.log(user, "from register")
+          set({ user })
+
+          // Note: We don't set tokens here as they're typically not provided upon registration
+        } catch (error) {
+          console.error('Registration failed:', error)
+          throw error
+        }
+      },
+
       login: async (email: string, password: string) => {
         set({ loading: true });
         try {
@@ -43,8 +59,7 @@ export const useAuthStore = create(
           set({ accessToken, user: responseBody });
           api.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
           console.log(accessToken, ".....")
-          // Fetch user data after successful login
-          // await get().checkAuth();
+          
         } catch (error) {
           console.error("Login failed:", error);
           throw error;
