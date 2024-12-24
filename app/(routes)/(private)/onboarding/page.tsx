@@ -5,11 +5,13 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/use-auth'
 import { Button } from "@/components/ui/button"
+import api from '@/app/api/axiosConfig'
 
 const Page = () => {
   const [interests, setInterests] = useState<string[]>([])
   const router = useRouter()
   const {user, loading} = useAuthStore()
+  const [isLoading, setIsLoading] = useState(false)
 
   console.log(user, loading)
 
@@ -23,9 +25,16 @@ const Page = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Here you would typically send the interests to your backend
-    console.log('Interests submitted:', interests)
-    router.push('/dashboard')
+    setIsLoading(true)
+    try {
+      // Here you would typically send the interests to your backend
+      await api.post("http://localhost:8080/api/v1/interests", {interests})
+      console.log('Interests submitted:', interests)
+      router.push('/dashboard')
+      
+    } catch (error) {
+      console.error('Failed to save interests:', error)
+    }
   }
 
   // if (!user && !loading) {
