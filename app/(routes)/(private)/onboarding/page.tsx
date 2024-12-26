@@ -13,7 +13,7 @@ const Page = () => {
   const {user, loading} = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
 
-  console.log(user, loading)
+  console.log(user, loading, isLoading)
 
   const handleInterestToggle = (interest: string) => {
     setInterests(prev => 

@@ -25,6 +25,7 @@ export default function Page() {
       await register(name, email, password)
       router.push('/onboarding') // Redirect to onboarding or dashboard
     } catch (error) {
+      console.log(error)
       setError('Registration failed. Please try again.') 
     } finally {
       setIsLoading(false)
