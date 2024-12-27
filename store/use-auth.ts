@@ -6,6 +6,7 @@ interface User {
   email: string;
   password: string;
   name: string;
+  frequency: string;
   createdAt: string;
   updatedAt: string;
 }

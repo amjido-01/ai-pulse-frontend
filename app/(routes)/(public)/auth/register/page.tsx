@@ -117,7 +117,7 @@ export default function Page() {
         
         <p className="text-center text-sm text-gray-400">
           Already have an account?{' '}
-          <Link href="/auth/signin" className="font-medium text-[#50E3C2] hover:text-[#4FACFE] transition-colors">
+          <Link href="/auth/login" className="font-medium text-[#50E3C2] hover:text-[#4FACFE] transition-colors">
             Sign in
           </Link>
         </p>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/use-auth'
 import { Button } from "@/components/ui/button"
 import api from '@/app/api/axiosConfig'
+import withAuth from '@/components/withAuth'
 
 const Page = () => {
   const [interests, setInterests] = useState<string[]>([])
@@ -26,27 +27,26 @@ const Page = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
+    if (interests.length === 0) {
+      alert('Please select at least one interest.')
+      return
+    }
     try {
       // Here you would typically send the interests to your backend
       await api.post("http://localhost:8080/api/v1/interests", {interests})
       console.log('Interests submitted:', interests)
-      router.push('/dashboard')
+      router.push('/onboarding/frequency')
       
     } catch (error) {
       console.error('Failed to save interests:', error)
     }
   }
 
-  // if (!user && !loading) {
-  //   router.push('/auth/login')
-  //   return null
-  // }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#000000] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">Welcome, {user?.name}!</h2>
           <p className="mt-2 text-center text-sm text-gray-300">
             Let's personalize your experience. Choose your interests:
           </p>
@@ -72,7 +72,7 @@ const Page = () => {
             type="submit"
             className="w-full bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
           >
-            Continue to Dashboard
+            Next
           </Button>
         </form>
       </div>
@@ -80,4 +80,4 @@ const Page = () => {
   )
 }
 
-export default Page
+export default withAuth(Page)

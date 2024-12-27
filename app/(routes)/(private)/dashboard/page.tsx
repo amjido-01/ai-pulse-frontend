@@ -29,6 +29,7 @@ function Dashboard() {
   };
     
   
+  console.log(user)
     useEffect(() => {
       const loadDashboard = async () => {
         try {
