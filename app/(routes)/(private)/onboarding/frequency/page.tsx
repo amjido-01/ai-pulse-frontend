@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import api from '@/app/api/axiosConfig'
+import { motion } from "framer-motion"
 
 const frequencies = [
   { value: 'daily', label: 'Daily' },
@@ -18,10 +19,12 @@ const frequencies = [
 
 const Page = () => {
   const [frequency, setFrequency] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     if (!frequency) return
 
     try {
@@ -31,6 +34,8 @@ const Page = () => {
       console.log(response.data, "from freq")
     } catch (error) {
       console.error('Failed to save notification frequency:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -59,7 +64,15 @@ const Page = () => {
             disabled={!frequency}
             className="w-full bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue to Dashboard
+              {isLoading ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
+              />
+            ) : (
+              "Continue to Dashboard"
+            )}
           </Button>
         </form>
       </div>

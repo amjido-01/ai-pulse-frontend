@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { motion } from "framer-motion"
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/use-auth'
@@ -39,6 +40,8 @@ const Page = () => {
       
     } catch (error) {
       console.error('Failed to save interests:', error)
+    }finally {
+      setIsLoading(false)
     }
   }
 
@@ -68,11 +71,20 @@ const Page = () => {
               </Button>
             ))}
           </div>
+        
           <Button
             type="submit"
             className="w-full bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
           >
-            Next
+              {isLoading ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
+              />
+            ) : (
+              "Next"
+            )}
           </Button>
         </form>
       </div>
