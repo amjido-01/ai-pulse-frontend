@@ -34,7 +34,7 @@ const Page = () => {
     }
     try {
       // Here you would typically send the interests to your backend
-      await api.post("http://localhost:8080/api/v1/interests", {interests})
+      await api.post("https://ai-pulse-backend.onrender.com/api/v1/interests", {interests})
       console.log('Interests submitted:', interests)
       router.push('/onboarding/frequency')
       
