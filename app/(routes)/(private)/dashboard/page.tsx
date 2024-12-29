@@ -31,8 +31,11 @@ import {
 // import RecommendedSources from '@/components/RecommendedSources'
 
 function Dashboard() {
-  const { user, logout } = useAuthStore();
+  const { user, 
+   // logout
+   } = useAuthStore();
   const router = useRouter();
+  console.log(router)
   // const [news, setNews] = useState([])
     const [loading, setLoading] = useState(true)
     // const { user, fetchInterests } = useAuthStore()

@@ -19,7 +19,9 @@ import {
 export function DashboardHeader() {
   const [searchQuery, setSearchQuery] = useState('')
   const router = useRouter()
-  const { user, logout } = useAuthStore()
+  const { 
+    // user, 
+    logout } = useAuthStore()
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
