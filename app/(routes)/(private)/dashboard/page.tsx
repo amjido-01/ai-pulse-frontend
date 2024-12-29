@@ -1,13 +1,13 @@
 "use client";
 
 import { useAuthStore } from "@/store/use-auth";
-import { DashboardHeader } from "@/components/DashboardHeader";
+// import { DashboardHeader } from "@/components/DashboardHeader";
 import { useRouter } from "next/navigation";
 import withAuth from "@/components/withAuth";
 import { useState, useEffect } from 'react'
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+// import { Input } from "@/components/ui/input"
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 import { AppSidebar } from "@/components/app-sidebar"
 import {
@@ -27,8 +27,8 @@ import {
 } from "@/components/ui/sidebar"
 
 // import NewsCard from '@/components/NewsCard'
-import TrendingTopics from '@/components/TrendingTopics'
-import RecommendedSources from '@/components/RecommendedSources'
+// import TrendingTopics from '@/components/TrendingTopics'
+// import RecommendedSources from '@/components/RecommendedSources'
 
 function Dashboard() {
   const { user, logout } = useAuthStore();
@@ -36,10 +36,10 @@ function Dashboard() {
   // const [news, setNews] = useState([])
     const [loading, setLoading] = useState(true)
     // const { user, fetchInterests } = useAuthStore()
-  const handleLogout = async () => {
-    await logout();
-    router.push("/auth/login");
-  };
+  // const handleLogout = async () => {
+  //   await logout();
+  //   router.push("/auth/login");
+  // };
     
   
   console.log(user)
@@ -124,10 +124,10 @@ function Dashboard() {
 
     return (
       <SidebarProvider>
-        <AppSidebar />
+        <AppSidebar className="bg-red-500"/>
         <SidebarInset>
-          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
+          <header className="flex bg-[#000000] h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1 text-white" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
@@ -143,7 +143,8 @@ function Dashboard() {
               </BreadcrumbList>
             </Breadcrumb>
           </header>
-          <div className="flex flex-1 flex-col gap-4 p-4">
+          <div className="bg-[#000000] relative flex flex-1 flex-col gap-4 p-4">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] opacity-50" />
             <div className="grid auto-rows-min gap-4 md:grid-cols-3">
               <div className="aspect-video rounded-xl bg-muted/50" />
               <div className="aspect-video rounded-xl bg-muted/50" />
