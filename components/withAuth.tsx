@@ -3,6 +3,7 @@
 import { useAuthStore } from "@/store/use-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion"
 
 const withAuth = <P extends object>(Component: React.ComponentType<P>) => {
   return function AuthenticatedComponent(props: P) {
@@ -23,7 +24,16 @@ const withAuth = <P extends object>(Component: React.ComponentType<P>) => {
     }, [checkAuth, router]);
 
     if (isLoading) {
-      return <p>Loading...</p>; // Loading UI while checking auth
+      return (
+        <div className="flex items-center border-2 border-red-500 h-full w-full">
+            <div>Loading..</div>
+            <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
+              />
+        </div>
+      ); // Loading UI while checking auth
     }
 
     if (!isLoggedIn()) {

@@ -1,18 +1,31 @@
 "use client";
 
 import { useAuthStore } from "@/store/use-auth";
+import { DashboardHeader } from "@/components/DashboardHeader";
 import { useRouter } from "next/navigation";
 import withAuth from "@/components/withAuth";
 import { useState, useEffect } from 'react'
-import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { BellIcon, 
-  //SearchIcon, 
-  BookmarkIcon, 
-  //TrendingUpIcon 
-} from 'lucide-react'
+
+import { AppSidebar } from "@/components/app-sidebar"
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb"
+
+import { Separator } from "@/components/ui/separator"
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
+
 // import NewsCard from '@/components/NewsCard'
 import TrendingTopics from '@/components/TrendingTopics'
 import RecommendedSources from '@/components/RecommendedSources'
@@ -65,64 +78,81 @@ function Dashboard() {
       return <div>Loading...</div>
     }
   
+    // return (
+    //   <div className="min-h-screen bg-[#000000] text-white p-8">
+    //     <DashboardHeader />
+
+      
+  
+    //     <Tabs defaultValue="foryou" className="mb-8">
+    //       <TabsList className="bg-[#1A1A1A]">
+    //         <TabsTrigger value="foryou">For You</TabsTrigger>
+    //         <TabsTrigger value="latest">Latest</TabsTrigger>
+    //         <TabsTrigger value="trending">Trending</TabsTrigger>
+    //       </TabsList>
+    //       <TabsContent value="foryou">
+    //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    //           {/* {news.map((item) => ( */}
+    //             {/*  <NewsCard key={item?.id} news={item} /> */}
+    //           {/* //))} */}
+    //         </div>
+    //       </TabsContent>
+    //       <TabsContent value="latest">
+    //         {/* Similar structure to "For You" tab */}
+    //       </TabsContent>
+    //       <TabsContent value="trending">
+    //         {/* Similar structure to "For You" tab */}
+    //       </TabsContent>
+    //     </Tabs>
+  
+    //     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    //       <Card className="col-span-2 bg-[#1A1A1A] border-[#333]">
+    //         <CardHeader>
+    //           <CardTitle>Your AI Digest</CardTitle>
+    //         </CardHeader>
+    //         <CardContent>
+    //           {/* Add a summary or highlights of key AI news */}
+    //         </CardContent>
+    //       </Card>
+    //       <div className="space-y-6">
+    //         <TrendingTopics />
+    //         <RecommendedSources />
+    //       </div>
+    //     </div>
+    //   </div>
+    // )
+
     return (
-      <div className="min-h-screen bg-[#000000] text-white p-8">
-        <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Welcome back, {user?.name}</h1>
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <BellIcon className="h-5 w-5" />
-            </Button>
-            <Button onClick={handleLogout} variant="ghost" size="icon">
-              <BookmarkIcon  className="h-5 w-5" />
-            </Button>
-          </div>
-        </header>
-  
-        <div className="mb-8">
-          <Input 
-            type="search" 
-            placeholder="Search AI news..." 
-            className="w-full bg-[#1A1A1A] border-[#333] text-white"
-          />
-        </div>
-  
-        <Tabs defaultValue="foryou" className="mb-8">
-          <TabsList className="bg-[#1A1A1A]">
-            <TabsTrigger value="foryou">For You</TabsTrigger>
-            <TabsTrigger value="latest">Latest</TabsTrigger>
-            <TabsTrigger value="trending">Trending</TabsTrigger>
-          </TabsList>
-          <TabsContent value="foryou">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* {news.map((item) => ( */}
-                {/*  <NewsCard key={item?.id} news={item} /> */}
-              {/* //))} */}
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <div className="flex flex-1 flex-col gap-4 p-4">
+            <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+              <div className="aspect-video rounded-xl bg-muted/50" />
+              <div className="aspect-video rounded-xl bg-muted/50" />
+              <div className="aspect-video rounded-xl bg-muted/50" />
             </div>
-          </TabsContent>
-          <TabsContent value="latest">
-            {/* Similar structure to "For You" tab */}
-          </TabsContent>
-          <TabsContent value="trending">
-            {/* Similar structure to "For You" tab */}
-          </TabsContent>
-        </Tabs>
-  
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <Card className="col-span-2 bg-[#1A1A1A] border-[#333]">
-            <CardHeader>
-              <CardTitle>Your AI Digest</CardTitle>
-            </CardHeader>
-            <CardContent>
-              {/* Add a summary or highlights of key AI news */}
-            </CardContent>
-          </Card>
-          <div className="space-y-6">
-            <TrendingTopics />
-            <RecommendedSources />
+            <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min" />
           </div>
-        </div>
-      </div>
+        </SidebarInset>
+      </SidebarProvider>
     )
 }
 
