@@ -1,49 +1,35 @@
 "use client";
 
 import { useAuthStore } from "@/store/use-auth";
-// import { DashboardHeader } from "@/components/DashboardHeader";
 import { useRouter } from "next/navigation";
 import withAuth from "@/components/withAuth";
 import { useState, useEffect } from 'react'
-// import { Input } from "@/components/ui/input"
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
+import Link from "next/link";
 import { AppSidebar } from "@/components/app-sidebar"
 import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-
-import { Separator } from "@/components/ui/separator"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-// import NewsCard from '@/components/NewsCard'
-// import TrendingTopics from '@/components/TrendingTopics'
-// import RecommendedSources from '@/components/RecommendedSources'
-
 function Dashboard() {
   const { user, 
-   // logout
+   logout
    } = useAuthStore();
   const router = useRouter();
   console.log(router)
-  // const [news, setNews] = useState([])
     const [loading, setLoading] = useState(true)
     // const { user, fetchInterests } = useAuthStore()
-  // const handleLogout = async () => {
-  //   await logout();
-  //   router.push("/auth/login");
-  // };
-    
   
   console.log(user)
     useEffect(() => {
@@ -65,86 +51,45 @@ function Dashboard() {
     }, 
     //[fetchInterests]
   )
-  
-    // Placeholder function to simulate fetching news
-    // const fetchNews = async (interests) => {
-    //   // This would be replaced with an actual API call
-    //   return [
-    //     { id: 1, title: "New GPT-4 Breakthrough", category: "Natural Language Processing" },
-    //     { id: 2, title: "AI in Healthcare: Latest Advancements", category: "Healthcare" },
-    //     { id: 3, title: "Robotics Revolution in Manufacturing", category: "Robotics" },
-    //     // ... more news items
-    //   ]
-    // }
+
+  const handleLogout = async () => {
+    await logout()
+    router.push('/auth/login')
+  }
   
     if (loading) {
       return <div>Loading...</div>
     }
-  
-    // return (
-    //   <div className="min-h-screen bg-[#000000] text-white p-8">
-    //     <DashboardHeader />
-
-      
-  
-    //     <Tabs defaultValue="foryou" className="mb-8">
-    //       <TabsList className="bg-[#1A1A1A]">
-    //         <TabsTrigger value="foryou">For You</TabsTrigger>
-    //         <TabsTrigger value="latest">Latest</TabsTrigger>
-    //         <TabsTrigger value="trending">Trending</TabsTrigger>
-    //       </TabsList>
-    //       <TabsContent value="foryou">
-    //         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    //           {/* {news.map((item) => ( */}
-    //             {/*  <NewsCard key={item?.id} news={item} /> */}
-    //           {/* //))} */}
-    //         </div>
-    //       </TabsContent>
-    //       <TabsContent value="latest">
-    //         {/* Similar structure to "For You" tab */}
-    //       </TabsContent>
-    //       <TabsContent value="trending">
-    //         {/* Similar structure to "For You" tab */}
-    //       </TabsContent>
-    //     </Tabs>
-  
-    //     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-    //       <Card className="col-span-2 bg-[#1A1A1A] border-[#333]">
-    //         <CardHeader>
-    //           <CardTitle>Your AI Digest</CardTitle>
-    //         </CardHeader>
-    //         <CardContent>
-    //           {/* Add a summary or highlights of key AI news */}
-    //         </CardContent>
-    //       </Card>
-    //       <div className="space-y-6">
-    //         <TrendingTopics />
-    //         <RecommendedSources />
-    //       </div>
-    //     </div>
-    //   </div>
-    // )
 
     return (
       <SidebarProvider>
         <AppSidebar className="bg-red-500"/>
         <SidebarInset>
-          <header className="flex bg-[#000000] h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1 text-white" />
-            <Separator orientation="vertical" className="mr-2 h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="#">
-                    Building Your Application
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator className="hidden md:block" />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
+          <header className="flex bg-[#000000] justify-between h-16 shrink-0 items-center border-b px-4">
+            <SidebarTrigger className="-ml-1 text-white" /> 
+            
+            <DropdownMenu>
+        <DropdownMenuTrigger asChild className="border-2 bg-white">
+          <Button variant="ghost" className="w-10 h-10 rounded-full p-0">
+            <User className="h-6 w-6" />
+            <span className="sr-only">Open user menu</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem>
+            <Link href="/profile">Profile</Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link href="/settings">Settings</Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleLogout}>
+            Log out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>    
           </header>
           <div className="bg-[#000000] relative flex flex-1 flex-col gap-4 p-4">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] opacity-50" />

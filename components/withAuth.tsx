@@ -25,13 +25,15 @@ const withAuth = <P extends object>(Component: React.ComponentType<P>) => {
 
     if (isLoading) {
       return (
-        <div className="flex items-center border-2 border-red-500 h-full w-full">
-            <div>Loading..</div>
+        <div className="flex items-center justify-center text-white bg-[#000000] h-screen w-full">
+            <div className="flex items-center gap-2">
             <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
-              />
+                className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
+                />
+                <div>Loading..</div>
+            </div>
         </div>
       ); // Loading UI while checking auth
     }
