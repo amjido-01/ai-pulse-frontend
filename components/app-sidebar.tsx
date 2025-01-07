@@ -2,7 +2,7 @@ import * as React from "react"
 import Link from "next/link"
 import { BrainCircuit } from "lucide-react"
 import { usePathname } from "next/navigation"
-import { SearchForm } from "@/components/search-form"
+// import { SearchForm } from "@/components/search-form"
 import {
   Sidebar,
   SidebarContent,

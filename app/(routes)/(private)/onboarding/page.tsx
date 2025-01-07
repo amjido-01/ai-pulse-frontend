@@ -34,7 +34,7 @@ const Page = () => {
     }
     try {
       // Here you would typically send the interests to your backend
-      await api.post("https://ai-pulse-backend.onrender.com/api/v1/interests", {interests})
+      await api.post("http://localhost:8080/api/v1/interests", {interests})
       console.log('Interests submitted:', interests)
       router.push('/onboarding/frequency')
       
@@ -56,7 +56,7 @@ const Page = () => {
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            {['AI', 'Machine Learning', 'Data Science', 'Robotics', 'Natural Language Processing', 'Computer Vision'].map((interest) => (
+            {['AI', 'Machine Learning', 'Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting"].map((interest) => (
               <Button
                 key={interest}
                 type="button"

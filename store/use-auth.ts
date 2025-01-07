@@ -9,6 +9,7 @@ interface User {
   frequency: string;
   createdAt: string;
   updatedAt: string;
+  interests: []
 }
 
 interface AuthState {
@@ -78,9 +79,9 @@ export const useAuthStore = create(
           set({ user: null, loading: false });
           return false;
         }
-
         try {
           const response = await api.get("/profile");
+          console.log(response, "res")
           const { user } = response.data;
           set({user});
           return true

@@ -29,7 +29,7 @@ const Page = () => {
 
     try {
     //   await saveNotificationFrequency(frequency)
-    const response = await api.post("https://ai-pulse-backend.onrender.com/api/v1/frequency", {frequency})
+    const response = await api.post("http://localhost:8080/api/v1/frequency", {frequency})
       router.push('/dashboard')
       console.log(response.data, "from freq")
     } catch (error) {
