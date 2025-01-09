@@ -56,7 +56,7 @@ const Page = () => {
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            {['AI', 'Machine Learning', 'Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting"].map((interest) => (
+            {['Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting", "Developer", "Scheduling", "Content", "Automation", "Government", "Healthcare", "Resumes", "Generative"].map((interest) => (
               <Button
                 key={interest}
                 type="button"
