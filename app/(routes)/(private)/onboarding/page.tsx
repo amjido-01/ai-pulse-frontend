@@ -24,7 +24,7 @@ const Page = () => {
         : [...prev, interest]
     )
   }
-
+  //ifre fows rqgp gpww 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -56,7 +56,7 @@ const Page = () => {
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            {['Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting", "Developer", "Scheduling", "Content", "Automation", "Government", "Healthcare", "Resumes", "Generative"].map((interest) => (
+            {['Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting", "Developer", "Scheduling", "Content", "Automation", "Government", "Healthcare", "Resumes", "Generative", "Salesforce", "Intelligence", "Art", "HR", "Analysis", "Fitness", "Domains"].map((interest) => (
               <Button
                 key={interest}
                 type="button"
