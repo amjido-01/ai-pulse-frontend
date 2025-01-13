@@ -99,7 +99,7 @@ const Page = () => {
           {interests.filter(interest => !predefinedInterests.includes(interest)).length > 0 && (
             <div className="mt-4">
               <p className="text-sm text-gray-300 mb-2">Custom Interests:</p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 border-2">
                 {interests.filter(interest => !predefinedInterests.includes(interest)).map((interest) => (
                   <Button
                     key={interest}
