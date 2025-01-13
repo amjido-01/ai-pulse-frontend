@@ -1,16 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from "framer-motion"
-import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuthStore } from '@/store/use-auth'
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import api from '@/app/api/axiosConfig'
 import withAuth from '@/components/withAuth'
 
 const Page = () => {
   const [interests, setInterests] = useState<string[]>([])
+  const [customInterest, setCustomInterest] = useState('')
   const router = useRouter()
   const {user, loading} = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
@@ -24,7 +25,14 @@ const Page = () => {
         : [...prev, interest]
     )
   }
-  //ifre fows rqgp gpww 
+
+  const handleAddCustomInterest = () => {
+    if (customInterest && !interests.includes(customInterest)) {
+      setInterests(prev => [...prev, customInterest])
+      setCustomInterest('')
+    }
+  }
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -33,18 +41,17 @@ const Page = () => {
       return
     }
     try {
-      // Here you would typically send the interests to your backend
       await api.post("http://localhost:8080/api/v1/interests", {interests})
       console.log('Interests submitted:', interests)
       router.push('/onboarding/frequency')
-      
     } catch (error) {
       console.error('Failed to save interests:', error)
-    }finally {
+    } finally {
       setIsLoading(false)
     }
   }
 
+  const predefinedInterests = ['Data Science', 'Finance', 'Graphics', 'Education', 'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting", "Developer", "Scheduling", "Content", "Automation", "Government", "Healthcare", "Resumes", "Generative", "Salesforce", "Intelligence", "Art", "HR", "Analysis", "Fitness", "Domains"]
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#000000] py-12 px-4 sm:px-6 lg:px-8">
@@ -56,7 +63,7 @@ const Page = () => {
         </div>
         <form onSubmit={handleSubmit} className="mt-8 space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            {['Data Science', 'Finance', 'Graphics', 'Education',  'Robotics', 'Natural Language Processing', 'Computer Vision', "Websites", "Productivity", "Database", "Marketing", "Photography", "Psychology", "Collaboration", "Analytics", "Podcasting", "Developer", "Scheduling", "Content", "Automation", "Government", "Healthcare", "Resumes", "Generative", "Salesforce", "Intelligence", "Art", "HR", "Analysis", "Fitness", "Domains"].map((interest) => (
+            {predefinedInterests.map((interest) => (
               <Button
                 key={interest}
                 type="button"
@@ -71,12 +78,47 @@ const Page = () => {
               </Button>
             ))}
           </div>
+          
+          <div className="flex space-x-2">
+            <Input
+              type="text"
+              value={customInterest}
+              onChange={(e) => setCustomInterest(e.target.value)}
+              placeholder="Enter custom interest"
+              className="flex-grow"
+            />
+            <Button
+              type="button"
+              onClick={handleAddCustomInterest}
+              className="bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
+            >
+              Add
+            </Button>
+          </div>
+
+          {interests.filter(interest => !predefinedInterests.includes(interest)).length > 0 && (
+            <div className="mt-4">
+              <p className="text-sm text-gray-300 mb-2">Custom Interests:</p>
+              <div className="flex flex-wrap gap-2">
+                {interests.filter(interest => !predefinedInterests.includes(interest)).map((interest) => (
+                  <Button
+                    key={interest}
+                    type="button"
+                    onClick={() => handleInterestToggle(interest)}
+                    className="bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
+                  >
+                    {interest} ✕
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
         
           <Button
             type="submit"
             className="w-full bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
           >
-              {isLoading ? (
+            {isLoading ? (
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
