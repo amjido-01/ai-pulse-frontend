@@ -23,6 +23,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+
 function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
@@ -33,7 +41,11 @@ function Dashboard() {
     const loadDashboard = async () => {
       try {
         // Fetch user interests
-        const interests = await useAuthStore.getState().fetchInterests()
+        const interests = await user?.interest
+        if (!interests || !interests.length) {
+          alert("please select some interest")
+          //redirect to /onboarding/interest
+        }
         
         // Fetch news based on interests (placeholder)
         const fetchedNews = await fetchNews(interests)
@@ -53,7 +65,7 @@ function Dashboard() {
     router.push('/auth/login')
   }
 
-  console.log(user)
+  // console.log(user)
 
   if (loading) {
     return <div className="flex items-center justify-center h-screen bg-[#000000]">Loading...</div>
