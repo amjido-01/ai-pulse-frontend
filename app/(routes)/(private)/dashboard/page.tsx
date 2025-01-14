@@ -42,7 +42,7 @@ function Dashboard() {
     const loadDashboard = async () => {
       try {
          // Fetch user interests
-         const interests = user?.interests;
+         const interests = user?.interest;
          if (!interests || !interests.length) {
            setIsDialogOpen(true)
            return
@@ -111,13 +111,13 @@ function Dashboard() {
             <h1 className="text-2xl font-bold text-white mb-6">Welcome back, {user?.name}!</h1>
             
             <div className="grid gap-6 md:grid-cols-3 mb-6">
-              <QuickStat title="Articles Read" value="12" />
+              <QuickStat title="Interest" value={user?.interest.length as number} />
               <QuickStat title="Saved Articles" value="5" />
               <QuickStat title="Top Interest" value="Machine Learning" />
             </div>
 
             <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-3 border-2 border-red-500">
               {news.map((article, index) => (
                 <ArticleCard key={index} {...article} />
               ))}
@@ -156,7 +156,7 @@ function Dashboard() {
   )
 }
 
-function QuickStat({ title, value }: { title: string, value: string }) {
+function QuickStat({ title, value }: { title: string, value: number }) {
   return (
     <div className="bg-gray-800 rounded-xl p-4">
       <h3 className="text-lg font-medium text-gray-400">{title}</h3>

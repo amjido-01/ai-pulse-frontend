@@ -9,7 +9,7 @@ interface User {
   frequency: string;
   createdAt: string;
   updatedAt: string;
-  interests: []
+  interest: []
 }
 
 interface AuthState {
