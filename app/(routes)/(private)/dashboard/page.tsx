@@ -34,18 +34,19 @@ import {
 function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   const [news, setNews] = useState([])
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-        // Fetch user interests
-        const interests = await user?.interest
-        if (!interests || !interests.length) {
-          alert("please select some interest")
-          //redirect to /onboarding/interest
-        }
+         // Fetch user interests
+         const interests = user?.interests;
+         if (!interests || !interests.length) {
+           setIsDialogOpen(true)
+           return
+         }
         
         // Fetch news based on interests (placeholder)
         const fetchedNews = await fetchNews(interests)
@@ -65,7 +66,11 @@ function Dashboard() {
     router.push('/auth/login')
   }
 
-  // console.log(user)
+  const handleRedirectToInterests = () => {
+    setIsDialogOpen(false)
+    router.push('/onboarding')
+  }
+  console.log(user)
 
   if (loading) {
     return <div className="flex items-center justify-center h-screen bg-[#000000]">Loading...</div>
@@ -129,6 +134,24 @@ function Dashboard() {
           </div>
         </div>
       </SidebarInset>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="bg-gray-800 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-[#50E3C2]">Select Interests</DialogTitle>
+            <DialogDescription className="text-gray-300">
+              Please select at least one interest to discover AI products tailored to your preferences.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="mt-4">
+            <Button 
+              onClick={handleRedirectToInterests}
+              className="w-full bg-[#50E3C2] text-black hover:bg-[#4FACFE] transition-colors"
+            >
+              Go to Interests
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </SidebarProvider>
   )
 }
