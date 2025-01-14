@@ -49,8 +49,6 @@ function Dashboard() {
          }
         
         // Fetch news based on interests (placeholder)
-        const fetchedNews = await fetchNews(interests)
-        setNews(fetchedNews)
       } catch (error) {
         console.error('Failed to load dashboard:', error)
       } finally {
