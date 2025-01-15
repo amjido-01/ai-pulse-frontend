@@ -20,7 +20,6 @@ const Page = () => {
   const [interests, setInterests] = useState<string[]>([])
   const [customInterest, setCustomInterest] = useState('')
   const router = useRouter()
-  const {user, loading} = useAuthStore()
   const [isLoading, setIsLoading] = useState(false)
 
   const predefinedInterests: Interest[] = [
@@ -70,6 +69,8 @@ const Page = () => {
       setCustomInterest('')
     }
   }
+
+  console.log(interests, "kkk")
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

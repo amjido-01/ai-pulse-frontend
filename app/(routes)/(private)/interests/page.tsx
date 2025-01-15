@@ -73,7 +73,7 @@ const Page = () => {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-12 h-12 border-4 border-[#50E3C2] border-t-transparent rounded-full"
+          className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
         />
       </div>
     )
