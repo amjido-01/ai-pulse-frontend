@@ -21,14 +21,13 @@ const Page = () => {
   const [newInterest, setNewInterest] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const { user } = useAuthStore()
 
   useEffect(() => {
     const fetchInterests = async () => {
       try {
         const response = await api.get('http://localhost:8080/api/v1/interests')
-        console.log(response.data.interest, "look")
         setUserInterests(response.data.interest)
+        console.log(response.data.interest,  "helo")
       } catch (error) {
         console.error('Failed to fetch interests:', error)
       } finally {
@@ -43,9 +42,17 @@ const Page = () => {
     if (newInterest && !userInterests.some(i => i.interest === newInterest)) {
       setIsSaving(true)
       try {
-        const response = await api.post('/api/v1/interests', { interest: newInterest })
-        setUserInterests(prev => [...prev, response.data])
-        setNewInterest('')
+
+          // Create a new array of interests including the new one
+          const updatedInterests = [...userInterests.map(i => i.interest), newInterest];
+
+          console.log(updatedInterests)
+        const response = await api.post("http://localhost:8080/api/v1/interests", { interests: updatedInterests })
+
+        console.log(response.data, "llll")
+
+          setUserInterests(response.data.responseBody); 
+          setNewInterest('');
       } catch (error) {
         console.error('Failed to add interest:', error)
       } finally {
@@ -90,7 +97,7 @@ const Page = () => {
             <div>
               <h2 className="text-lg font-semibold mb-2">Your Current Interests</h2>
               <div className="flex flex-wrap gap-2">
-              {userInterests.map((interest) => (
+              {userInterests?.map((interest) => (
                 <Button
                   key={interest.id}
                   variant="outline"

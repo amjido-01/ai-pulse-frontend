@@ -70,7 +70,6 @@ const Page = () => {
     }
   }
 
-  console.log(interests, "kkk")
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
