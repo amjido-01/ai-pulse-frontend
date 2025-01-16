@@ -27,7 +27,6 @@ const Page = () => {
       try {
         const response = await api.get('http://localhost:8080/api/v1/interests')
         setUserInterests(response.data.interest)
-        console.log(userInterests, "all from user")
       } catch (error) {
         console.error('Failed to fetch interests:', error)
       } finally {
@@ -37,7 +36,6 @@ const Page = () => {
     fetchInterests()
   }, [])
 
-  console.log(userInterests, "interest")
 
 
   const handleAddInterest = async () => {
@@ -48,10 +46,7 @@ const Page = () => {
           // Create a new array of interests including the new one
           const updatedInterests = [...userInterests.map(i => i.interest), newInterest];
 
-          console.log(updatedInterests,  "updated")
         const response = await api.post("http://localhost:8080/api/v1/interests", { interests: updatedInterests })
-
-        console.log(response.data.responseBody.interest, "llll")
 
           setUserInterests(response.data.responseBody.interest); 
           setNewInterest('');
@@ -64,11 +59,18 @@ const Page = () => {
   }
 
 
-  const handleRemoveInterest = async (interestToRemove: Interest) => {
+  const handleRemoveInterest = async (interestToRemove: number) => {
     setIsSaving(true)
     try {
       // await api.delete(`/api/v1/interests/${interestToRemove.id}`)
-      setUserInterests(prev => prev.filter(interest => interest.id !== interestToRemove.id))
+      const res = await api.delete(`http://localhost:8080/api/v1/interests/${interestToRemove}`)
+      console.log(res.data)
+      // setUserInterests(prev => prev.filter(interest => interest.id !== interestToRemove.id))
+       // Assuming the response contains the updated user object
+       if (res.data && res.data.user) {
+        // Update the state with the new interests
+        setUserInterests(res.data.user.interest);
+    }
     } catch (error) {
       console.error('Failed to remove interest:', error)
     } finally {
@@ -91,7 +93,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen bg-[#000000] py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="max-w-2xl mx-auto bg-gray-900 text-white">
+      <Card className="max-w-2xl mx-auto bg-transparent border-none text-white">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center text-[#50E3C2]">Manage Your Interests</CardTitle>
         </CardHeader>
@@ -105,7 +107,7 @@ const Page = () => {
                   key={interest.id}
                   variant="outline"
                   className="bg-gray-800 text-[#50E3C2] hover:bg-gray-700"
-                  onClick={() => handleRemoveInterest(interest)}
+                  onClick={() => handleRemoveInterest(interest.id)}
                 >
                   {interest.interest} ✕
                 </Button>
