@@ -27,7 +27,7 @@ const Page = () => {
       try {
         const response = await api.get('http://localhost:8080/api/v1/interests')
         setUserInterests(response.data.interest)
-        console.log(response.data.interest,  "helo")
+        console.log(userInterests, "all from user")
       } catch (error) {
         console.error('Failed to fetch interests:', error)
       } finally {
@@ -36,6 +36,8 @@ const Page = () => {
     }
     fetchInterests()
   }, [])
+
+  console.log(userInterests, "interest")
 
 
   const handleAddInterest = async () => {
@@ -46,12 +48,12 @@ const Page = () => {
           // Create a new array of interests including the new one
           const updatedInterests = [...userInterests.map(i => i.interest), newInterest];
 
-          console.log(updatedInterests)
+          console.log(updatedInterests,  "updated")
         const response = await api.post("http://localhost:8080/api/v1/interests", { interests: updatedInterests })
 
-        console.log(response.data, "llll")
+        console.log(response.data.responseBody.interest, "llll")
 
-          setUserInterests(response.data.responseBody); 
+          setUserInterests(response.data.responseBody.interest); 
           setNewInterest('');
       } catch (error) {
         console.error('Failed to add interest:', error)
@@ -60,6 +62,7 @@ const Page = () => {
       }
     }
   }
+
 
   const handleRemoveInterest = async (interestToRemove: Interest) => {
     setIsSaving(true)
