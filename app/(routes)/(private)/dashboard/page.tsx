@@ -110,7 +110,7 @@ function Dashboard() {
             
             <div className="grid gap-6 md:grid-cols-3 mb-6">
               <QuickStat title="Interest" value={user?.interest.length as number} />
-              <QuickStat title="Saved Articles" value="5" />
+              <QuickStat title="Saved Articles" value={user?.interest.length as number} />
               <QuickStat title="Top Interest" value="Machine Learning" />
             </div>
 

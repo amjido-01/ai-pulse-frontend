@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react'
 import { motion } from "framer-motion"
-import { useAuthStore } from '@/store/use-auth'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
@@ -81,11 +80,11 @@ const Page = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#000000]">
+      <div className="min-h-screen flex items-center justify-center bg[#000000]">
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-5 h-5 border-2 border-gray-900 border-t-transparent rounded-full"
+          className="w-5 h-5 border-2 border-white border-t-transparent rounded-full"
         />
       </div>
     )

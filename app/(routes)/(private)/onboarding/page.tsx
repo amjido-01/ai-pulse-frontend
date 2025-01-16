@@ -3,7 +3,6 @@
 import React, { useState } from 'react'
 import { motion } from "framer-motion"
 import { useRouter } from 'next/navigation'
-import { useAuthStore } from '@/store/use-auth'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
@@ -36,6 +35,8 @@ const Page = () => {
     { name: 'Marketing', icon: ShoppingBag },
     { name: 'Photography', icon: Camera },
     { name: 'Psychology', icon: Brain },
+    {name: "Management", icon: Microscope},
+    {name: "DevOps", icon: Globe},
     { name: 'Collaboration', icon: Users },
     { name: 'Analytics', icon: Search },
     { name: 'Podcasting', icon: Music },
