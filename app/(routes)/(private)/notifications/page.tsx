@@ -130,7 +130,7 @@ const NotificationsPage = () => {
         <div className="bg-[#000000] relative flex flex-1 flex-col gap-4 p-4">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] opacity-50" />
           <div className="relative z-10">
-            <h1 className="text-2xl font-bold text-white mb-6">Notifications</h1>
+            <h1 className="text-2xl font-bold text-center text-[#50E3C2] mb-6">Notifications</h1>
             <div className="grid gap-4 md:grid-cols-2">
               {userNotifications.map(notification => (
                 <NotificationCard key={notification.id} notification={notification} onDelete={deleteNotification} />
