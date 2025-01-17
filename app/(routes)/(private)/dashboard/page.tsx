@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { User } from 'lucide-react';
-
 import { useAuthStore } from "@/store/use-auth";
 import withAuth from "@/components/withAuth";
 import { AppSidebar } from "@/components/app-sidebar"
@@ -111,7 +110,7 @@ function Dashboard() {
             <div className="grid gap-6 md:grid-cols-3 mb-6">
               <QuickStat title="Interest" value={user?.interest.length as number} />
               <QuickStat title="Saved Articles" value={user?.interest.length as number} />
-              <QuickStat title="Top Interest" value="Machine Learning" />
+              {/* <QuickStat title="Top Interest" value="Machine Learning" /> */}
             </div>
 
             <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>
