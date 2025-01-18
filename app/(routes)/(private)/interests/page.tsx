@@ -37,11 +37,12 @@ const Page = () => {
   const [newInterest, setNewInterest] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const { user, logout } = useAuthStore()
+  const { user,npm run dev logout } = useAuthStore()
   const router = useRouter()
 
   useEffect(() => {
     const fetchInterests = async () => {
+      console.log(isLoading)
       try {
         const response = await api.get('http://localhost:8080/api/v1/interests')
         setUserInterests(response.data.interest)
