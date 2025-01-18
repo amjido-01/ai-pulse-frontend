@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import api from '@/app/api/axiosConfig'
 import withAuth from '@/components/withAuth'
-import { Database, BookOpen, Brain, Camera, Eye, Code, Calendar, FileText, Briefcase, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, Share2, ShoppingBag, Smartphone, Star, Terminal, Tv, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, TypeIcon as type, LucideIcon } from 'lucide-react'
+import { Database, BookOpen, Brain, Camera, Eye, Code, Calendar, FileText, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, ShoppingBag, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, TypeIcon as type, LucideIcon } from 'lucide-react'
 
 interface Interest {
   name: string

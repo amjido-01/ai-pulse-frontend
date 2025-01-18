@@ -37,7 +37,7 @@ const Page = () => {
   const [newInterest, setNewInterest] = useState('')
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
-  const { user,npm run dev logout } = useAuthStore()
+  const { logout } = useAuthStore()
   const router = useRouter()
 
   useEffect(() => {
@@ -89,7 +89,6 @@ const Page = () => {
     await logout()
     router.push('/auth/login')
   }
-
 
   return (
     <SidebarProvider>
