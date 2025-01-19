@@ -31,7 +31,7 @@ interface Notification {
   message: string
   createdAt: string
   sent: Boolean
-  type: 'info' | 'success' | 'warning'
+
 }
 
 const NotificationCard: React.FC<{ notification: Notification; onDelete: (id: string) => void }> = ({ notification, onDelete }) => (
@@ -48,11 +48,10 @@ const NotificationCard: React.FC<{ notification: Notification; onDelete: (id: st
       <p className="text-xs text-gray-400">{new Date(notification.createdAt).toLocaleString()}</p>
       <p className="mt-2 text-gray-300">{notification.message}</p>
       <div className="mt-4 flex justify-between items-center">
-        {notification.type === 'info' && <Bell className="h-4 w-4 text-blue-500" />}
-        {notification.type === 'success' && <CheckCircle className="h-4 w-4 text-green-500" />}
-        {notification.type === 'warning' && <AlertCircle className="h-4 w-4 text-yellow-500" />}
+        {notification.sent === true && <CheckCircle className="h-4 w-4 text-green-500" />}
+        {notification.sent === false && <AlertCircle className="h-4 w-4 text-yellow-500" />}
         <Button variant="ghost" size="sm" onClick={() => onDelete(notification.id)}>
-          <Trash2 className="h-4 w-4" />
+          <Trash2 className="h-4 w-4 text-red-500" />
         </Button>
       </div>
     </CardContent>
@@ -132,11 +131,11 @@ const NotificationsPage = () => {
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] opacity-50" />
           <div className="relative z-10">
             <h1 className="text-2xl font-bold text-center text-[#50E3C2] mb-6">Notifications</h1>
-            <div className="grid gap-4 md:grid-cols-2">
+            {userNotifications.length ? <div className="grid gap-4 md:grid-cols-2">
               {userNotifications.map(notification => (
                 <NotificationCard key={notification.id} notification={notification} onDelete={deleteNotification} />
               ))}
-            </div>
+            </div> : <div><h1 className='text-2xl font-bold text-center text-white mb-6'>No notification for you yet</h1></div>}
           </div>
         </div>
       </SidebarInset>
