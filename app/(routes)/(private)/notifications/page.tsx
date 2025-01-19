@@ -27,21 +27,21 @@ import {
 
 interface Notification {
   id: string
-  title: string
+  productName: string
   message: string
   createdAt: string
-  status: 'sent' | 'unsent'
+  sent: Boolean
   type: 'info' | 'success' | 'warning'
 }
 
 const NotificationCard: React.FC<{ notification: Notification; onDelete: (id: string) => void }> = ({ notification, onDelete }) => (
   <Card className="mb-4 bg-gray-800 text-white">
     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-      <CardTitle className="text-sm font-medium">
-        {notification.title}
+      <CardTitle className="text-sm font-medium text-[#50E3C2]">
+        {notification.productName}
       </CardTitle>
-      <Badge variant={notification.status === 'sent' ? 'default' : 'secondary'}>
-        {notification.status}
+      <Badge className={`${notification.sent && "text-green-500 bg-gray-300"} border-transparent bg-primary shadow hover:bg-primary/80`}>
+        {notification.sent ? "Sent" : "Unsend"}
       </Badge>
     </CardHeader>
     <CardContent>
@@ -62,7 +62,7 @@ const NotificationCard: React.FC<{ notification: Notification; onDelete: (id: st
 const NotificationsPage = () => {
   const [userNotifications, setUserNotifications] = useState<Notification[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true)
-  const { user, logout } = useAuthStore()
+  const { logout } = useAuthStore()
   const router = useRouter();
 
   useEffect(() => {
@@ -70,6 +70,7 @@ const NotificationsPage = () => {
       try {
         const response = await api.get('http://localhost:8080/api/v1/notifications')
         setUserNotifications(response.data.notifications)
+        console.log(response.data.notifications, "fron noti")
       } catch (error) {
         console.error('Failed to fetch notifications:', error)
       } finally {
