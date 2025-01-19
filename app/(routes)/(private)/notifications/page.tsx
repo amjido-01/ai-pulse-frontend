@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { User, Bell, CheckCircle, AlertCircle, Trash2 } from 'lucide-react';
+import { User, Bell, CheckCircle, AlertCircle, Trash2, Frown } from 'lucide-react';
 import { useAuthStore } from '@/store/use-auth'
 import api from "@/app/api/axiosConfig"
 import withAuth from '@/components/withAuth'
@@ -135,7 +135,9 @@ const NotificationsPage = () => {
               {userNotifications.map(notification => (
                 <NotificationCard key={notification.id} notification={notification} onDelete={deleteNotification} />
               ))}
-            </div> : <div><h1 className='text-2xl font-bold text-center text-white mb-6'>No notification for you yet</h1></div>}
+            </div> : <div className=' flex justify-center items-center'>
+            <div className='flex gap-4'><h1 className='text-2xl font-bold text-center text-white mb-6'>No notification for you yet</h1> <Frown className='h-8 mt-1 w-8 text-white' /></div>
+              </div>}
           </div>
         </div>
       </SidebarInset>

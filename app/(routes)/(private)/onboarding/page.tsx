@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import api from '@/app/api/axiosConfig'
 import withAuth from '@/components/withAuth'
-import { Database, BookOpen, Brain, Camera, Eye, Code, Calendar, FileText, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, ShoppingBag, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, TypeIcon as type, LucideIcon } from 'lucide-react'
+import { Database, BookOpen, Brain, Camera, Eye, Code, Calendar, FileText, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, ShoppingBag, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, Type, TypeIcon as type, LucideIcon, Star, ChevronDown, ChevronUp, Calculator, ShoppingCart, BookOpenCheck, Briefcase } from 'lucide-react'
+import { cn } from "@/lib/utils"
+
 
 interface Interest {
   name: string
@@ -18,6 +20,7 @@ interface Interest {
 const Page = () => {
   const [interests, setInterests] = useState<string[]>([])
   const [customInterest, setCustomInterest] = useState('')
+  const [isExpanded, setIsExpanded] = useState(false)
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 
@@ -35,8 +38,8 @@ const Page = () => {
     { name: 'Marketing', icon: ShoppingBag },
     { name: 'Photography', icon: Camera },
     { name: 'Psychology', icon: Brain },
-    {name: "Management", icon: Microscope},
-    {name: "DevOps", icon: Globe},
+    { name: "Management", icon: Microscope },
+    { name: "DevOps", icon: Globe },
     { name: 'Collaboration', icon: Users },
     { name: 'Analytics', icon: Search },
     { name: 'Podcasting', icon: Music },
@@ -53,7 +56,12 @@ const Page = () => {
     { name: 'HR', icon: Users },
     { name: 'Analysis', icon: Search },
     { name: 'Fitness', icon: Heart },
-    { name: 'Technology', icon: Laptop }
+    { name: 'Technology', icon: Laptop },
+    { name: 'Accounting', icon: Calculator },
+    { name: 'Ecommerce', icon: ShoppingCart },
+    { name: 'Research', icon: BookOpenCheck },
+    { name: 'Auditor', icon: Briefcase },
+    { name: 'Creative', icon: Palette }
   ]
 
   const handleInterestToggle = (interest: string) => {
@@ -71,7 +79,6 @@ const Page = () => {
     }
   }
 
-  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -91,7 +98,7 @@ const Page = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#000000] py-12 px-4 sm:px-6 lg:px-8">
-      <Card className="w-full max-w-4xl p-6 bg-transparent bordergray800 border-none">
+      <Card className="w-full max-w-4xl p-6 bg-transparent border-gray-800 border-none">
         <div className="space-y-6">
           <div className="text-center space-y-2">
             <h2 className="text-2xl font-bold text-white">Let's select your interests</h2>
@@ -100,28 +107,48 @@ const Page = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-              {predefinedInterests.map(({ name, icon: Icon }) => (
-                <Button
-                  key={name}
-                  type="button"
-                  onClick={() => handleInterestToggle(name)}
-                  variant="outline"
-                  className={`
-                    h-auto py-3 px-4 justify-start space-x-2
-                    ${interests.includes(name)
-                      ? 'bg-[#50E3C2] text-black border-[#50E3C2] hover:bg-[#4FACFE] hover:text-black'
-                      : 'bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700'}
-                  `}
-                >
-                  <Icon className="h-4 w-4 shrink-0" />
-                  <span className="text-sm truncate">{name}</span>
-                </Button>
-              ))}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div className="space-y-4">
+              <div className="relative">
+                <div className={cn(
+                  "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 mb-8 gap-3",
+                  !isExpanded && "max-h-[360px] overflow-hidden"
+                )}>
+                  {predefinedInterests.map(({ name, icon: Icon }) => (
+                    <Button
+                      key={name}
+                      type="button"
+                      onClick={() => handleInterestToggle(name)}
+                      variant="outline"
+                      className={`
+                        h-auto py-3 px-4 justify-start space-x-2
+                        ${interests.includes(name)
+                          ? 'bg-[#50E3C2] text-black border-[#50E3C2] hover:bg-[#4FACFE] hover:text-black'
+                          : 'bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700'}
+                      `}
+                    >
+                      <Icon className="h-4 w-4 shrink-0" />
+                      <span className="text-sm truncate">{name}</span>
+                    </Button>
+                  ))}
+                </div>
+                {!isExpanded && (
+                  <div className="absolute bottom-0 inset-x-0 h-20 bg-gradient-to-t from-[#000000] to-transparent pointer-events-none" />
+                )}
+                {predefinedInterests.length > 12 && (
+                  <Button
+                    type="button"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-[#50E3C2] text-black hover:bg-[#4FACFE] py-1 px-2 shadow-lg"
+                  >
+                    <ChevronDown className={cn("h-4 w-4 transition-transform", isExpanded && "rotate-180")} />
+                    expand
+                  </Button>
+                )}
+              </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="mb-4 mt-8">
               <div className="flex space-x-2">
                 <Input
                   type="text"
