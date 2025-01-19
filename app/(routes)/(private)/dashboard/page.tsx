@@ -21,7 +21,6 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-
 import {
   Dialog,
   DialogContent,
@@ -30,24 +29,59 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 
+interface NewsArticle {
+  title: string;
+  description: string;
+  source: {
+    name: string;
+  };
+  publishedAt: string;
+  url: string;
+  imageUrl?: string | null;
+}
+
+interface NewsApiResponse {
+  status: string;
+  articles: NewsArticle[];
+}
+
 function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [news, setNews] = useState([])
+  const [news, setNews] = useState<NewsArticle[]>([])
 
   useEffect(() => {
     const loadDashboard = async () => {
       try {
-         // Fetch user interests
-         const interests = user?.interest;
-         if (!interests || !interests.length) {
-           setIsDialogOpen(true)
-           return
-         }
+        const interests = user?.interest;
+        if (!interests || !interests.length) {
+          setIsDialogOpen(true)
+          return
+        }
         
-        // Fetch news based on interests (placeholder)
+        // Fetch news from News API
+        const response = await fetch(
+          'https://newsapi.org/v2/everything?q=ai&apiKey=33e9129ff38a4802b885ba5c80f01051'
+        );
+        const data: NewsApiResponse = await response.json();
+        
+        if (data.status === 'ok') {
+          // Filter out removed articles and get first 6 valid articles
+          const validArticles = data.articles
+            .filter(article => 
+              article.title !== '[Removed]' && 
+              article.description !== '[Removed]' &&
+              article.url !== 'https://removed.com' &&
+              article.source.name !== '[Removed]'
+            )
+            .slice(0, 6);
+            
+          setNews(validArticles);
+        } else {
+          console.error('Failed to fetch news');
+        }
       } catch (error) {
         console.error('Failed to load dashboard:', error)
       } finally {
@@ -56,7 +90,7 @@ function Dashboard() {
     }
 
     loadDashboard()
-  }, [])
+  }, [user?.interest])
 
   const handleLogout = async () => {
     await logout()
@@ -67,7 +101,6 @@ function Dashboard() {
     setIsDialogOpen(false)
     router.push('/onboarding')
   }
-  console.log(user)
 
   if (loading) {
     return <div className="flex items-center justify-center h-screen bg-[#000000]">Loading...</div>
@@ -108,15 +141,23 @@ function Dashboard() {
             <h1 className="text-2xl font-bold text-white mb-6">Welcome back, {user?.name}!</h1>
             
             <div className="grid gap-6 md:grid-cols-3 mb-6">
-              <QuickStat title="Interest" value={user?.interest.length as number} />
-              <QuickStat title="Saved Articles" value={user?.interest.length as number} />
-              {/* <QuickStat title="Top Interest" value="Machine Learning" /> */}
+              <QuickStat title="Interest" value={user?.interest?.length || 0} />
+              <QuickStat title="Saved Articles" value={0} />
+              <QuickStat title="Latest Updates" value={news.length} />
             </div>
 
             <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>
-            <div className="grid gap-4 md:grid-cols-3 border-2 border-red-500">
+            <div className="grid gap-4 md:grid-cols-3">
               {news.map((article, index) => (
-                <ArticleCard key={index} {...article} />
+                <ArticleCard 
+                  key={index}
+                  title={article.title}
+                  excerpt={article.description}
+                  source={article.source.name}
+                  date={new Date(article.publishedAt).toLocaleDateString()}
+                  url={article.url}
+                  imageUrl={article.imageUrl}
+                />
               ))}
             </div>
 
@@ -162,49 +203,50 @@ function QuickStat({ title, value }: { title: string, value: number }) {
   )
 }
 
-function ArticleCard({ title, excerpt, source, date }: { title: string, excerpt: string, source: string, date: string }) {
+function ArticleCard({ 
+  title, 
+  excerpt, 
+  source, 
+  date,
+  url,
+  imageUrl 
+}: { 
+  title: string, 
+  excerpt: string, 
+  source: string, 
+  date: string,
+  url: string,
+  imageUrl?: string | null
+}) {
   return (
-    <div className="bg-gray-800 rounded-xl p-4">
-      <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-      <p className="text-gray-400 mb-4">{excerpt}</p>
-      <div className="flex justify-between items-center">
+    <div className="bg-gray-800 rounded-xl p-4 flex flex-col">
+      {imageUrl && (
+        <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+          <img 
+            src={imageUrl || "/placeholder.svg"} 
+            alt={title}
+            className="object-cover w-full h-full"
+            onError={(e) => {
+              e.currentTarget.style.display = 'none'
+            }}
+          />
+        </div>
+      )}
+      <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">{title}</h3>
+      <p className="text-gray-400 mb-4 line-clamp-3 flex-grow">{excerpt}</p>
+      <div className="flex justify-between items-center mt-auto">
         <span className="text-sm text-gray-500">{source} • {date}</span>
-        <Button variant="outline" size="sm" className="text-white hover:bg-gray-700">
-          Save
+        <Button 
+          variant="outline" 
+          size="sm" 
+          className=" hover:text-white hover:bg-gray-700"
+          onClick={() => window.open(url, '_blank')}
+        >
+          Read More
         </Button>
       </div>
     </div>
   )
 }
 
-// Placeholder function for fetching news
-async function fetchNews(interests: string[]) {
-  // This would be replaced with an actual API call
-  return [
-    {
-      title: "Breakthrough in Quantum Computing",
-      excerpt: "Scientists achieve new milestone in quantum supremacy...",
-      source: "Tech News",
-      date: "2023-06-15"
-    },
-    {
-      title: "AI Ethics: The Road Ahead",
-      excerpt: "Experts discuss the future of AI governance and ethics...",
-      source: "AI Journal",
-      date: "2023-06-14"
-    },
-    {
-      title: "Machine Learning in Healthcare",
-      excerpt: "New ML models show promise in early disease detection...",
-      source: "Health Tech Today",
-      date: "2023-06-13"
-    }
-  ]
-}
-
 export default withAuth(Dashboard);
-// api key oISmk6TGsTnbB--fGbtoQ_M1vBm-IbCVs2Gtl7UhoUQ 
-// api scret  Ce6MVBCjU2P0M673zY3Qiz9K8Hz7RoPJQt6qw3AJlHY
-
-
-//33e9129ff38a4802b885ba5c80f01051
