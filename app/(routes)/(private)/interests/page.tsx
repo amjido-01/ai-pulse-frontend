@@ -53,7 +53,7 @@ const Page = () => {
       }
     }
     fetchInterests()
-  }, [])
+  }, [isLoading])
 
   const handleAddInterest = async () => {
     if (newInterest && !userInterests.some(i => i.interest === newInterest)) {

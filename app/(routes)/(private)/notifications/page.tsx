@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { User, Bell, CheckCircle, AlertCircle, Trash2, Frown } from 'lucide-react';
+import { User, CheckCircle, AlertCircle, Trash2, Frown } from 'lucide-react';
 import { useAuthStore } from '@/store/use-auth'
 import api from "@/app/api/axiosConfig"
 import withAuth from '@/components/withAuth'

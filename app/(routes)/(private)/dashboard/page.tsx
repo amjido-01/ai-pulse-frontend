@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from 'next/image';
 import {
   SidebarInset,
   SidebarProvider,
@@ -222,7 +223,7 @@ function ArticleCard({
     <div className="bg-gray-800 rounded-xl p-4 flex flex-col">
       {imageUrl && (
         <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
-          <img 
+          <Image 
             src={imageUrl || "/placeholder.svg"} 
             alt={title}
             className="object-cover w-full h-full"
