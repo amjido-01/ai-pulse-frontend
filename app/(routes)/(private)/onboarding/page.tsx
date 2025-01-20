@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import api from '@/app/api/axiosConfig'
 import withAuth from '@/components/withAuth'
-import { Database, BookOpen, Brain, Camera, Eye, Code, Calendar, FileText, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, ShoppingBag, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, Type, TypeIcon as type, LucideIcon, Star, ChevronDown, ChevronUp, Calculator, ShoppingCart, BookOpenCheck, Briefcase } from 'lucide-react'
+import { Database, BookOpen, Brain, HelpingHand, Camera, Eye, Code, Calendar, FileText, Heart, Globe, Music, PenTool, BotIcon as Robot, Search, Settings, ShoppingBag, Users, Zap, Building2, Laptop, Lightbulb, LineChart, MessageSquare, Microscope, Palette, Shield, Type, TypeIcon as type, LucideIcon, Star, ChevronDown, ChevronUp, Calculator, ShoppingCart, BookOpenCheck, Briefcase } from 'lucide-react'
 import { cn } from "@/lib/utils"
 
 
@@ -52,6 +52,10 @@ const Page = () => {
     { name: 'Resumes', icon: FileText },
     { name: 'Generative', icon: PenTool },
     { name: 'Intelligence', icon: Lightbulb },
+    { name: 'Community', icon: Users },
+    { name: 'Assistance', icon: HelpingHand },
+    { name: 'Insight', icon: Eye },
+    { name: 'Salesforce', icon: Briefcase },
     { name: 'Art', icon: Palette },
     { name: 'HR', icon: Users },
     { name: 'Analysis', icon: Search },
@@ -62,7 +66,8 @@ const Page = () => {
     { name: 'Research', icon: BookOpenCheck },
     { name: 'Auditor', icon: Briefcase },
     { name: 'Creative', icon: Palette }
-  ]
+];
+
 
   const handleInterestToggle = (interest: string) => {
     setInterests(prev => 
