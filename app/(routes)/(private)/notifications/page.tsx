@@ -67,7 +67,7 @@ const NotificationsPage = () => {
   useEffect(() => {
     const fetchUserNotifications = async () => {
       try {
-        const response = await api.get('http://localhost:8080/api/v1/notifications')
+        const response = await api.get('https://ai-pulse-backend.onrender.com/api/v1/notifications')
         setUserNotifications(response.data.notifications)
         console.log(response.data.notifications, "fron noti")
       } catch (error) {
@@ -82,7 +82,7 @@ const NotificationsPage = () => {
 
   const deleteNotification = async (id: string) => {
     try {
-      await api.delete(`http://localhost:8080/api/v1/notifications/${id}`)
+      await api.delete(`https://ai-pulse-backend.onrender.com/api/v1/notifications/${id}`)
       setUserNotifications(userNotifications.filter(n => n.id !== id))
     } catch (error) {
       console.error('Failed to delete notification:', error)

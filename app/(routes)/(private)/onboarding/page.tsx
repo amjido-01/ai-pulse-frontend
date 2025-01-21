@@ -92,7 +92,7 @@ const Page = () => {
       return
     }
     try {
-      await api.post("http://localhost:8080/api/v1/interests", {interests})
+      await api.post("https://ai-pulse-backend.onrender.com/api/v1/interests", {interests})
       router.push('/onboarding/frequency')
     } catch (error) {
       console.error('Failed to save interests:', error)

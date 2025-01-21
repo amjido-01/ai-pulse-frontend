@@ -44,7 +44,7 @@ const Page = () => {
     const fetchInterests = async () => {
       console.log(isLoading)
       try {
-        const response = await api.get('http://localhost:8080/api/v1/interests')
+        const response = await api.get('https://ai-pulse-backend.onrender.com/api/v1/interests')
         setUserInterests(response.data.interest)
       } catch (error) {
         console.error('Failed to fetch interests:', error)
@@ -60,7 +60,7 @@ const Page = () => {
       setIsSaving(true)
       try {
         const updatedInterests = [...userInterests.map(i => i.interest), newInterest];
-        const response = await api.post("http://localhost:8080/api/v1/interests", { interests: updatedInterests })
+        const response = await api.post("https://ai-pulse-backend.onrender.com/api/v1/interests", { interests: updatedInterests })
         setUserInterests(response.data.responseBody.interest); 
         setNewInterest('');
       } catch (error) {
@@ -74,7 +74,7 @@ const Page = () => {
   const handleRemoveInterest = async (interestToRemove: number) => {
     setIsSaving(true)
     try {
-      const res = await api.delete(`http://localhost:8080/api/v1/interests/${interestToRemove}`)
+      const res = await api.delete(`https://ai-pulse-backend.onrender.com/api/v1/interests/${interestToRemove}`)
       if (res.data && res.data.user) {
         setUserInterests(res.data.user.interest);
       }
