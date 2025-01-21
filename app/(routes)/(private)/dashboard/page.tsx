@@ -64,7 +64,7 @@ function Dashboard() {
         
         // Fetch news from News API
         const response = await fetch(
-          'https://newsapi.org/v2/everything?q=ai&apiKey=33e9129ff38a4802b885ba5c80f01051'
+          'https://newsapi.org/v2/everything?q=ai&from=2025-01-15&to=2025-01-20&sortBy=popularity&apiKey=33e9129ff38a4802b885ba5c80f01051'
         );
         const data: NewsApiResponse = await response.json();
         

@@ -9,16 +9,78 @@ import { Input } from "@/components/ui/input";
 import { ReactTyped } from 'react-typed'
 import { BrainCircuit, Mail, Bell, Zap, ChevronRight, Menu, X, Microscope, Tractor, GraduationCap, Briefcase, Stethoscope, ShieldCheck } from "lucide-react"
 import revo from "@/public/revo.jpg";
+import axios from 'axios'
+
+
+interface NewsArticle {
+  title: string;
+  description: string;
+  source: {
+    name: string;
+  };
+  publishedAt: string;
+  url: string;
+  imageUrl?: string | null;
+}
+
+interface NewsApiResponse {
+  status: string;
+  articles: NewsArticle[];
+}
+
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [news, setNews] = useState<NewsArticle[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchNews = async() => {
+    try {
+      const response = await axios.get<NewsApiResponse>("https://newsapi.org/v2/everything?q=ai&from=2025-01-15&to=2025-01-20&sortBy=popularity&apiKey=33e9129ff38a4802b885ba5c80f01051")
+      console.log(response.data)
+
+       
+      if (response.status === 200 && response.data.articles) {
+        // Filter out invalid or removed articles
+        const validArticles = response.data.articles
+          .filter(
+            (article) =>
+              article.title !== "[Removed]" &&
+              article.description !== "[Removed]" &&
+              article.url !== "https://removed.com" &&
+              article.source.name !== "[Removed]"
+          )
+          .slice(0, 15);
+
+          const keywords = ["ai", "machine learning", "artificial intelligence"];
+          
+    const aiProducts = validArticles.filter((post) => {
+      const name = post.title.toLowerCase();
+      const tagline = post.description.toLowerCase();
+      return keywords.some((keyword) => name.includes(keyword) || tagline.includes(keyword));
+    });
+
+        setNews(aiProducts);
+      } else {
+        console.error("Failed to fetch news - Invalid response", error);
+        setError("Failed to fetch news");
+      }
+    } catch (error) {
+      console.error("Error fetching news:", error);
+      setError("An error occurred while fetching the news");
+    }
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY)
     window.addEventListener("scroll", handleScroll)
     console.log(scrollY)
+    fetchNews()
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  console.log(news)
+
 
   return (
     <div className="flex flex-col min-h-screen bg-[#000000] text-white overflow-hidden">
@@ -82,7 +144,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-[#50E3C2] rounded-full filter blur-xl opacity-50 animate-pulse" />
               </motion.div>
               <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl/none xl:text-8xl/none max-w-2xl">
-                Revolutionize Your AI Knowledge
+              Explore New AI Products Built for You
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl lg:text-2xl">
                 Stay ahead with personalized AI updates in{' '}
@@ -178,9 +240,7 @@ export default function Home() {
                     </motion.li>
                   ))}
                 </ul>
-                <Button className="mt-4 bg-[#50E3C2] hover:bg-[#4FACFE] text-black transition-all duration-300">
-                  Start Your Journey
-                </Button>
+                <Link href="\auth\login" className='bg-[#50E3C2]  text-black border border-[#50E3C2] hover:bg-[#50E3C2] hover:text-black transition-all duration-300 h-9 px-4 py-2 inline-flex items-center justify-center whitespace-nowrap rounded-md ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50'>Start Your Journey</Link>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -192,12 +252,7 @@ export default function Home() {
                 <div className="relative bg-[#1A1A1A] p-6 rounded-lg shadow-xl">
                   <h3 className="text-xl font-semibold mb-4">Latest AI Breakthroughs</h3>
                   <ul className="space-y-3">
-                    {[
-                      "GPT-4 Achieves Human-Level Performance in Creative Writing",
-                      "New AI Model Predicts Protein Structures with 98% Accuracy",
-                      "Autonomous Drones Master Complex Search and Rescue Operations",
-                      "AI-Powered Climate Model Improves Long-Term Weather Forecasting"
-                    ].map((news, index) => (
+                    {news.map((item, index) => (
                       <motion.li
                         key={index}
                         initial={{ opacity: 0, x: 20 }}
@@ -206,7 +261,7 @@ export default function Home() {
                         className="flex items-start space-x-2"
                       >
                         <Zap className="h-5 w-5 text-[#50E3C2] mt-1 flex-shrink-0" />
-                        <span className="text-sm">{news}</span>
+                        <span className="text-sm">{item.title}</span>
                       </motion.li>
                     ))}
                   </ul>
