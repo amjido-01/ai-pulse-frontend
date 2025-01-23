@@ -31,7 +31,6 @@ interface Notification {
   message: string
   createdAt: string
   sent: boolean
-
 }
 
 const NotificationCard: React.FC<{ notification: Notification; onDelete: (id: string) => void }> = ({ notification, onDelete }) => (

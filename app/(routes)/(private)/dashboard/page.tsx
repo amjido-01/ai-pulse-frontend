@@ -46,6 +46,7 @@ interface NewsApiResponse {
   articles: NewsArticle[];
 }
 
+
 function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
@@ -107,6 +108,11 @@ function Dashboard() {
     return <div className="flex items-center justify-center h-screen bg-[#000000]">Loading...</div>
   }
 
+  console.log(user?.notifications)
+  const sentNotifications = user?.notifications.filter(item => item.sent)
+  const pendingNotifications = user?.notifications.filter(item => !item.sent)
+  console.log(typeof sentNotifications)
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -143,8 +149,8 @@ function Dashboard() {
             
             <div className="grid gap-6 md:grid-cols-3 mb-6">
               <QuickStat title="Interest" value={user?.interest?.length || 0} />
-              <QuickStat title="Saved Articles" value={0} />
-              <QuickStat title="Latest Updates" value={news.length} />
+              <QuickStat title="Sent Notifications" value={sentNotifications?.length || 0} />
+              <QuickStat title="Pending Notifications" value={pendingNotifications?.length || 0} />
             </div>
 
             <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>

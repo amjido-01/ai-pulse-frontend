@@ -1,6 +1,15 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import api from "@/app/api/axiosConfig";
+
+interface Notification {
+  id: string
+  productName: string
+  message: string
+  createdAt: string
+  sent: boolean
+}
+
 interface User {
   id: number;
   email: string;
@@ -9,7 +18,8 @@ interface User {
   frequency: string;
   createdAt: string;
   updatedAt: string;
-  interest: []
+  interest: [];
+  notifications: Notification[]
 }
 
 interface AuthState {
