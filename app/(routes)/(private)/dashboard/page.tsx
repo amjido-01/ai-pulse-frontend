@@ -297,50 +297,50 @@ function QuickStat({ title, value }: { title: string, value: number }) {
   )
 }
 
-function ArticleCard({ 
-  title, 
-  excerpt, 
-  source, 
-  date,
-  url,
-  imageUrl 
-}: { 
-  title: string, 
-  excerpt: string, 
-  source: string, 
-  date: string,
-  url: string,
-  imageUrl?: string | null
-}) {
-  return (
-    <div className="bg-gray-800 rounded-xl p-4 flex flex-col">
-      {imageUrl && (
-        <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
-          <Image 
-            src={imageUrl || "/placeholder.svg"} 
-            alt={title}
-            className="object-cover w-full h-full"
-            onError={(e) => {
-              e.currentTarget.style.display = 'none'
-            }}
-          />
-        </div>
-      )}
-      <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">{title}</h3>
-      <p className="text-gray-400 mb-4 line-clamp-3 flex-grow">{excerpt}</p>
-      <div className="flex justify-between items-center mt-auto">
-        <span className="text-sm text-gray-500">{source} • {date}</span>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className=" hover:text-white hover:bg-gray-700"
-          onClick={() => window.open(url, '_blank')}
-        >
-          Read More
-        </Button>
-      </div>
-    </div>
-  )
-}
+// function ArticleCard({ 
+//   title, 
+//   excerpt, 
+//   source, 
+//   date,
+//   url,
+//   imageUrl 
+// }: { 
+//   title: string, 
+//   excerpt: string, 
+//   source: string, 
+//   date: string,
+//   url: string,
+//   imageUrl?: string | null
+// }) {
+//   return (
+//     <div className="bg-gray-800 rounded-xl p-4 flex flex-col">
+//       {imageUrl && (
+//         <div className="relative w-full h-48 mb-4 rounded-lg overflow-hidden">
+//           <Image 
+//             src={imageUrl || "/placeholder.svg"} 
+//             alt={title}
+//             className="object-cover w-full h-full"
+//             onError={(e) => {
+//               e.currentTarget.style.display = 'none'
+//             }}
+//           />
+//         </div>
+//       )}
+//       <h3 className="text-lg font-semibold text-white mb-2 line-clamp-2">{title}</h3>
+//       <p className="text-gray-400 mb-4 line-clamp-3 flex-grow">{excerpt}</p>
+//       <div className="flex justify-between items-center mt-auto">
+//         <span className="text-sm text-gray-500">{source} • {date}</span>
+//         <Button 
+//           variant="outline" 
+//           size="sm" 
+//           className=" hover:text-white hover:bg-gray-700"
+//           onClick={() => window.open(url, '_blank')}
+//         >
+//           Read More
+//         </Button>
+//       </div>
+//     </div>
+//   )
+// }
 
 export default withAuth(Dashboard);
