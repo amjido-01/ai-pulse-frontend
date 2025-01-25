@@ -16,6 +16,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use"
 import Image from 'next/image';
 import {
   SidebarInset,
@@ -29,6 +31,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Input } from "@/components/ui/input"
+
+
 
 interface NewsArticle {
   title: string;
@@ -52,7 +58,12 @@ function Dashboard() {
   const router = useRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [news, setNews] = useState<NewsArticle[]>([])
+  // const [news, setNews] = useState<NewsArticle[]>([])
+  const [showConfetti, setShowConfetti] = useState(false)
+  const [feedback, setFeedback] = useState("")
+  const [isNewUser, setIsNewUser] = useState(false)
+
+  const { width, height } = useWindowSize()
 
   useEffect(() => {
     const loadDashboard = async () => {
@@ -62,28 +73,44 @@ function Dashboard() {
           setIsDialogOpen(true)
           return
         }
+
+
+        // Check if the user is coming from the onboarding/frequency page
+        const previousPath = sessionStorage.getItem("previousPath")
+        console.log(previousPath, "prev")
+        const isNewUser = previousPath === "/onboarding/frequency"
+        setIsNewUser(isNewUser)
+
+        if (isNewUser) {
+          setShowConfetti(true)
+          setTimeout(() => setShowConfetti(false), 5000) // Stop confetti after 5 seconds
+        }
+
+        // Clear the previous path from session storage
+        sessionStorage.removeItem("previousPath")
         
         // Fetch news from News API
-        const response = await fetch(
-          'https://newsapi.org/v2/everything?q=ai&from=2025-01-15&to=2025-01-20&sortBy=popularity&apiKey=33e9129ff38a4802b885ba5c80f01051'
-        );
-        const data: NewsApiResponse = await response.json();
+        // const response = await fetch(
+        //   'https://newsapi.org/v2/everything?q=ai&from=2025-01-15&to=2025-01-20&sortBy=popularity&apiKey=33e9129ff38a4802b885ba5c80f01051'
+        // );
+        // const data: NewsApiResponse = await response.json();
         
-        if (data.status === 'ok') {
-          // Filter out removed articles and get first 6 valid articles
-          const validArticles = data.articles
-            .filter(article => 
-              article.title !== '[Removed]' && 
-              article.description !== '[Removed]' &&
-              article.url !== 'https://removed.com' &&
-              article.source.name !== '[Removed]'
-            )
-            .slice(0, 6);
+        // if (data.status === 'ok') {
+        //   // Filter out removed articles and get first 6 valid articles
+        //   const validArticles = data.articles
+        //     .filter(article => 
+        //       article.title !== '[Removed]' && 
+        //       article.description !== '[Removed]' &&
+        //       article.url !== 'https://removed.com' &&
+        //       article.source.name !== '[Removed]'
+        //     )
+        //     .slice(0, 6);
             
-          setNews(validArticles);
-        } else {
-          console.error('Failed to fetch news');
-        }
+        //   setNews(validArticles);
+        // } else {
+        //   console.error('Failed to fetch news');
+        // }
+
       } catch (error) {
         console.error('Failed to load dashboard:', error)
       } finally {
@@ -104,11 +131,21 @@ function Dashboard() {
     router.push('/onboarding')
   }
 
+  
+  const handleFeedbackSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // TODO: Implement feedback submission
+    console.log("Feedback submitted:", feedback)
+    setFeedback("")
+    // Show a thank you message or notification here
+  }
+
   if (loading) {
     return <div className="flex items-center justify-center h-screen bg-[#000000]">Loading...</div>
   }
 
   console.log(user?.notifications)
+  console.log(user?.interest)
   const sentNotifications = user?.notifications.filter(item => item.sent)
   const pendingNotifications = user?.notifications.filter(item => !item.sent)
   console.log(typeof sentNotifications)
@@ -144,8 +181,26 @@ function Dashboard() {
         </header>
         <div className="bg-[#000000] relative flex flex-1 flex-col gap-4 p-4">
           <div className="absolute inset-0 bg-gradient-to-br from-[#0A0A0A] to-[#1A1A1A] opacity-50" />
+          
           <div className="relative z-10">
-            <h1 className="text-2xl font-bold text-white mb-6">Welcome back, {user?.name}!</h1>
+          {showConfetti &&   <Confetti
+              width={width}
+              height={height}
+            />}
+          <h1 className="text-2xl font-bold text-white mb-6">
+              {isNewUser ? `Welcome, ${user?.name}!` : `Welcome back, ${user?.name}!`}
+            </h1>
+
+            
+            {isNewUser && (
+              <Alert className="mb-6">
+                <AlertTitle>Welcome to our AI Product Notification App!</AlertTitle>
+                <AlertDescription>
+                  We're excited to have you on board. Sit back and relax while we prepare notifications based on your
+                  selected interests.
+                </AlertDescription>
+              </Alert>
+            )}
             
             <div className="grid gap-6 md:grid-cols-3 mb-6">
               <QuickStat title="Interest" value={user?.interest?.length || 0} />
@@ -153,7 +208,30 @@ function Dashboard() {
               <QuickStat title="Pending Notifications" value={pendingNotifications?.length || 0} />
             </div>
 
-            <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>
+            <Alert className="mb-6">
+              <AlertTitle>Waiting for AI Product Updates</AlertTitle>
+              <AlertDescription>
+                We're constantly scanning for new AI products that match your interests. You'll receive notifications
+                based on your selected frequency.
+              </AlertDescription>
+            </Alert>
+
+            
+            <div className="bg-gray-800 rounded-xl p-6 mb-6">
+              <h2 className="text-xl font-semibold text-white mb-4">Help Us Improve</h2>
+              <form onSubmit={handleFeedbackSubmit} className="flex gap-2">
+                <Input
+                  type="text"
+                  placeholder="What feature would you like to see next?"
+                  value={feedback}
+                  onChange={(e) => setFeedback(e.target.value)}
+                  className="flex-grow"
+                />
+                <Button type="submit">Submit</Button>
+              </form>
+            </div>
+
+            {/* <h2 className="text-xl font-semibold text-white mb-4">Latest AI News</h2>
             <div className="grid gap-4 md:grid-cols-3">
               {news.map((article, index) => (
                 <ArticleCard 
@@ -166,16 +244,25 @@ function Dashboard() {
                   imageUrl={article.imageUrl}
                 />
               ))}
+            </div> */}
+
+            <h2 className="text-xl font-semibold text-white mt-6 mb-4">Your Interests</h2>
+            <div className="flex flex-wrap gap-2">
+              {user?.interest?.map((interest) => (
+                <Button key={interest.id} variant="outline" className="bg-gray-800 text-white hover:bg-gray-700">
+                  {interest.interest}
+                </Button>
+              ))}
             </div>
 
-            <h2 className="text-xl font-semibold text-white mt-6 mb-4">Trending Topics</h2>
+            {/* <h2 className="text-xl font-semibold text-white mt-6 mb-4">Trending Topics</h2>
             <div className="flex flex-wrap gap-2">
               {['GPT-4', 'Quantum Computing', 'Robotics', 'Neural Networks'].map((topic) => (
                 <Button key={topic} variant="outline" className="bg-gray-800 text-white hover:bg-gray-700">
                   {topic}
                 </Button>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </SidebarInset>

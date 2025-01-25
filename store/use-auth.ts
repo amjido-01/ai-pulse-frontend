@@ -9,6 +9,11 @@ interface Notification {
   createdAt: string
   sent: boolean
 }
+interface Interest {
+  id: number
+  interest: string
+  userId: string
+}
 
 interface User {
   id: number;
@@ -18,7 +23,7 @@ interface User {
   frequency: string;
   createdAt: string;
   updatedAt: string;
-  interest: [];
+  interest: Interest[];
   notifications: Notification[]
 }
 
