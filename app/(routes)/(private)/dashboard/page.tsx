@@ -36,21 +36,21 @@ import { Input } from "@/components/ui/input"
 
 
 
-interface NewsArticle {
-  title: string;
-  description: string;
-  source: {
-    name: string;
-  };
-  publishedAt: string;
-  url: string;
-  imageUrl?: string | null;
-}
+// interface NewsArticle {
+//   title: string;
+//   description: string;
+//   source: {
+//     name: string;
+//   };
+//   publishedAt: string;
+//   url: string;
+//   imageUrl?: string | null;
+// }
 
-interface NewsApiResponse {
-  status: string;
-  articles: NewsArticle[];
-}
+// interface NewsApiResponse {
+//   status: string;
+//   articles: NewsArticle[];
+// }
 
 
 function Dashboard() {
