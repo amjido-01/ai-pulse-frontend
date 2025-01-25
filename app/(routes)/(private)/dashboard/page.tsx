@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use"
-import Image from 'next/image';
+// import Image from 'next/image';
 import {
   SidebarInset,
   SidebarProvider,
