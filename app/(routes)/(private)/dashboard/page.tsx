@@ -33,7 +33,8 @@ import {
 } from "@/components/ui/dialog"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Input } from "@/components/ui/input"
-
+import api from '@/app/api/axiosConfig';
+import { useToast } from '@/hooks/use-toast';
 
 
 // interface NewsArticle {
@@ -56,9 +57,11 @@ import { Input } from "@/components/ui/input"
 function Dashboard() {
   const { user, logout } = useAuthStore();
   const router = useRouter();
+  const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [loading, setLoading] = useState(true)
   // const [news, setNews] = useState<NewsArticle[]>([])
+  const [sending, setSending] = useState(false)
   const [showConfetti, setShowConfetti] = useState(false)
   const [feedback, setFeedback] = useState("")
   const [isNewUser, setIsNewUser] = useState(false)
@@ -132,12 +135,28 @@ function Dashboard() {
   }
 
   
-  const handleFeedbackSubmit = (e: React.FormEvent) => {
+  const handleFeedbackSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // TODO: Implement feedback submission
-    console.log("Feedback submitted:", feedback)
-    setFeedback("")
-    // Show a thank you message or notification here
+    setSending(true)
+    try {
+      const response = await api.post("https://ai-pulse-backend.onrender.com/api/v1/send-feedback", {feedback})
+      console.log(response)
+      if (response.status === 200) {
+        toast({
+          description: "Your message has been sent.",
+        })
+      } else {
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        })
+      }
+      setFeedback("")
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setSending(false)
+    }
   }
 
   if (loading) {
@@ -225,9 +244,9 @@ function Dashboard() {
                   placeholder="What feature would you like to see next?"
                   value={feedback}
                   onChange={(e) => setFeedback(e.target.value)}
-                  className="flex-grow"
+                  className="flex-grow text-white"
                 />
-                <Button type="submit">Submit</Button>
+                <Button type="submit">{sending ? "sending.." :  "Submit"}</Button>
               </form>
             </div>
 
