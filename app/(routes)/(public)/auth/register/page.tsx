@@ -39,7 +39,6 @@ export default function Page() {
         console.error("Unexpected error:", error);
         setError("An unexpected error occurred.");
       }
-      
     } finally {
       setIsLoading(false)
     }

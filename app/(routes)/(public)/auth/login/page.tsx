@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { BrainCircuit } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { useAuthStore } from '@/store/use-auth'
+import axios, {AxiosError} from 'axios'
 
 export default function Page() {
   const router = useRouter()
@@ -24,9 +25,20 @@ export default function Page() {
     try {
       await login(email, password)
       router.push('/dashboard')
-    } catch (error) {
-      console.error('Login error:', error)
-      setError('Login failed. Please try again.') 
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        // Handle Axios error and safely extract response message
+        console.error("Axios error:", error.response?.data);
+        setError(error.response?.data?.responseMessage || "An error occurred while signing up.");
+      } else if (error instanceof Error) {
+        // Handle generic JavaScript errors
+        console.error("Error:", error.message);
+        setError(error.message);
+      } else {
+        // Handle unexpected error types
+        console.error("Unexpected error:", error);
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setIsLoading(false)
     }
