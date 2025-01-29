@@ -11,9 +11,7 @@ import { motion } from "framer-motion"
 
 const frequencies = [
   { value: 'daily', label: 'Daily' },
-  { value: 'twice-weekly', label: 'Twice Weekly' },
   { value: 'weekly', label: 'Weekly' },
-  { value: 'bi-weekly', label: 'Bi-Weekly' },
   { value: 'monthly', label: 'Monthly' }
 ]
 
