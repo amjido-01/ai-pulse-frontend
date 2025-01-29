@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { BrainCircuit } from 'lucide-react'
 import { Input } from "@/components/ui/input"
 import { useAuthStore } from '@/store/use-auth'
-import axios, {AxiosError} from 'axios'
+import axios from 'axios'
 
 export default function Page() {
   const router = useRouter()
