@@ -28,7 +28,7 @@ export default function Page() {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         // Handle Axios error and safely extract response message
-        console.error("Axios error:", error.response?.data);
+        // console.error("Axios error:", error.response?.data);
         setError(error.response?.data?.responseMessage || "An error occurred while signing up.");
       } else if (error instanceof Error) {
         // Handle generic JavaScript errors
