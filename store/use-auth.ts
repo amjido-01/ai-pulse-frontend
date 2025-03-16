@@ -107,6 +107,7 @@ export const useAuthStore = create(
         }
       },
 
+      // generate refresh token
       refreshToken: async () => {
         try {
           const response = await api.post("/refresh-token");
@@ -122,6 +123,7 @@ export const useAuthStore = create(
         }
       },
 
+      // login function
       logout: async () => {
         console.log("log out...")
         try {
